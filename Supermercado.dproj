@@ -1,0 +1,226 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{EEF75B9C-4070-4EF7-950B-C11F97F00177}</ProjectGuid>
+        <MainSource>Supermercado.dpr</MainSource>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <TargetedPlatforms>1</TargetedPlatforms>
+        <AppType>Application</AppType>
+        <FrameworkType>VCL</FrameworkType>
+        <ProjectVersion>14.3</ProjectVersion>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_SymbolReferenceInfo>1</DCC_SymbolReferenceInfo>
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Locale>1046</VerInfo_Locale>
+        <DCC_ExeOutput>D:\coisas\SUPERMERCADO\EXE</DCC_ExeOutput>
+        <VerInfo_MajorVer>2</VerInfo_MajorVer>
+        <DCC_WriteableConstants>true</DCC_WriteableConstants>
+        <DCC_N>true</DCC_N>
+        <DCC_UsePackage>VCL40;VCLX40;VCLDB40;VCLDBX40;VCLSMP40;QRPT40;TEEUI40;TEEDB40;TEE40;DSS40;ibevnt40;VCLMID40;NMFAST40;INETDB40;INET40;vcl;vclx;vcldb;qrpt;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_ImageBase>00400000</DCC_ImageBase>
+        <DCC_UNSAFE_CAST>true</DCC_UNSAFE_CAST>
+        <DCC_S>false</DCC_S>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.0.0.3;InternalName=;LegalCopyright=WSES;LegalTrademarks=WSES;OriginalFilename=;ProductName=Supermercado;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_UNSAFE_CODE>true</DCC_UNSAFE_CODE>
+        <DCC_K>false</DCC_K>
+        <VerInfo_Build>3</VerInfo_Build>
+        <DCC_DcuOutput>D:\coisas\SUPERMERCADO\DCU</DCC_DcuOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_F>false</DCC_F>
+        <DCC_UNSAFE_TYPE>true</DCC_UNSAFE_TYPE>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
+        <Icon_MainIcon>Supermercado_Icon.ico</Icon_MainIcon>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <Icon_MainIcon>Supermercado_Icon.ico</Icon_MainIcon>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_DebugInformation>false</DCC_DebugInformation>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="Principal.pas">
+            <Form>FrmPrincipal</Form>
+        </DCCReference>
+        <DCCReference Include="Cad_Cliente.pas">
+            <Form>FrmCad_Cliente</Form>
+        </DCCReference>
+        <DCCReference Include="Sobre.pas">
+            <Form>FrmSobre</Form>
+        </DCCReference>
+        <DCCReference Include="Cad_Produto.pas">
+            <Form>FrmCad_Produto</Form>
+        </DCCReference>
+        <DCCReference Include="UDM.pas">
+            <Form>DM</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="Con_Cliente.pas">
+            <Form>FrmCon_Cliente</Form>
+        </DCCReference>
+        <DCCReference Include="Con_Produto.pas">
+            <Form>FrmCon_Produto</Form>
+        </DCCReference>
+        <DCCReference Include="Con_Venda.pas">
+            <Form>FrmCon_Venda</Form>
+        </DCCReference>
+        <DCCReference Include="Cad_Venda.pas">
+            <Form>FrmCad_Venda</Form>
+        </DCCReference>
+        <DCCReference Include="Rel_Cliente.pas">
+            <Form>FrmRel_Cliente</Form>
+        </DCCReference>
+        <DCCReference Include="Con_ProdutoVenda.pas">
+            <Form>FrmCon_ProdutoVenda</Form>
+        </DCCReference>
+        <DCCReference Include="Sel_Cliente.pas">
+            <Form>FrmSel_Cliente</Form>
+        </DCCReference>
+        <DCCReference Include="QR_Cliente.pas">
+            <Form>FrmQR_Cliente</Form>
+        </DCCReference>
+        <DCCReference Include="Rel_Produto.pas">
+            <Form>FrmRel_Produto</Form>
+        </DCCReference>
+        <DCCReference Include="Rel_Venda.pas">
+            <Form>FrmRel_Venda</Form>
+        </DCCReference>
+        <DCCReference Include="QR_Produto.pas">
+            <Form>FrmQR_Produto</Form>
+        </DCCReference>
+        <DCCReference Include="QR_Venda.pas">
+            <Form>FrmQR_Venda</Form>
+        </DCCReference>
+        <DCCReference Include="levantamentos.pas">
+            <Form>Formlevantamentos</Form>
+        </DCCReference>
+        <DCCReference Include="estoque.pas">
+            <Form>Formestoque</Form>
+        </DCCReference>
+        <DCCReference Include="configuracao.pas">
+            <Form>Formconfiguracao</Form>
+        </DCCReference>
+        <DCCReference Include="pagamento.pas">
+            <Form>Formpagamento</Form>
+        </DCCReference>
+        <DCCReference Include="conclientevenda.pas">
+            <Form>Formconclientevenda</Form>
+        </DCCReference>
+        <DCCReference Include="Con_Fornecedores.pas">
+            <Form>FrmCon_Fornecedores</Form>
+        </DCCReference>
+        <DCCReference Include="Cad_Fornecedores.pas">
+            <Form>FrmCad_Fornecedores</Form>
+        </DCCReference>
+        <DCCReference Include="Splash.pas">
+            <Form>FrmSplash</Form>
+        </DCCReference>
+        <DCCReference Include="Rel_Fornecedores.pas">
+            <Form>FrmRel_Fornecedores</Form>
+        </DCCReference>
+        <DCCReference Include="QR_Fornecedores.pas">
+            <Form>FrmQR_Fornecedores</Form>
+        </DCCReference>
+        <DCCReference Include="comprovante.pas">
+            <Form>FrmComprovante</Form>
+        </DCCReference>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">Supermercado.dpr</Source>
+                </Source>
+                <VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+                    <VersionInfo Name="AutoIncBuild">False</VersionInfo>
+                    <VersionInfo Name="MajorVer">2</VersionInfo>
+                    <VersionInfo Name="MinorVer">0</VersionInfo>
+                    <VersionInfo Name="Release">0</VersionInfo>
+                    <VersionInfo Name="Build">3</VersionInfo>
+                    <VersionInfo Name="Debug">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="Special">False</VersionInfo>
+                    <VersionInfo Name="Private">False</VersionInfo>
+                    <VersionInfo Name="DLL">False</VersionInfo>
+                    <VersionInfo Name="Locale">1046</VersionInfo>
+                    <VersionInfo Name="CodePage">1252</VersionInfo>
+                </VersionInfo>
+                <VersionInfoKeys>
+                    <VersionInfoKeys Name="CompanyName"/>
+                    <VersionInfoKeys Name="FileDescription"/>
+                    <VersionInfoKeys Name="FileVersion">2.0.0.3</VersionInfoKeys>
+                    <VersionInfoKeys Name="InternalName"/>
+                    <VersionInfoKeys Name="LegalCopyright">WSES</VersionInfoKeys>
+                    <VersionInfoKeys Name="LegalTrademarks">WSES</VersionInfoKeys>
+                    <VersionInfoKeys Name="OriginalFilename"/>
+                    <VersionInfoKeys Name="ProductName">Supermercado</VersionInfoKeys>
+                    <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="Comments"/>
+                </VersionInfoKeys>
+            </Delphi.Personality>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">False</Platform>
+            </Platforms>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

@@ -1,0 +1,86 @@
+object Formestoque: TFormestoque
+  Left = 426
+  Top = 143
+  BorderStyle = bsDialog
+  Caption = 'Estoque'
+  ClientHeight = 492
+  ClientWidth = 423
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnShow = FormShow
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 13
+    Top = 10
+    Width = 42
+    Height = 14
+    Caption = 'NOME.:'
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Courier New'
+    Font.Style = []
+    ParentFont = False
+  end
+  object DBGrid1: TDBGrid
+    Left = -1
+    Top = 54
+    Width = 425
+    Height = 497
+    DataSource = DM.DtsQryProduto
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Courier New'
+    Font.Style = []
+    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit]
+    ParentFont = False
+    ReadOnly = True
+    TabOrder = 0
+    TitleFont.Charset = ANSI_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Courier New'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Cod_Produto'
+        Width = 73
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Nome'
+        Width = 252
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Quant'
+        Width = 64
+        Visible = True
+      end>
+  end
+  object EdtConsulta: TEdit
+    Left = 12
+    Top = 25
+    Width = 121
+    Height = 22
+    CharCase = ecUpperCase
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Courier New'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    OnChange = EdtConsultaChange
+  end
+end

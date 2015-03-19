@@ -1,0 +1,206 @@
+unit pagamento;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, pngimage, ExtCtrls, StdCtrls, Mask, ToolEdit, CurrEdit, Buttons,
+  DBCtrls, jpeg, ComCtrls;
+
+type
+  TFormpagamento = class(TForm)
+    cbtipopag: TComboBox;
+    Label1: TLabel;
+    Panel1: TPanel;
+    Image1: TImage;
+    Shape1: TShape;
+    Label2: TLabel;
+    ettotal: TCurrencyEdit;
+    Image2: TImage;
+    Panel2: TPanel;
+    BitBtn2: TBitBtn;
+    BitBtn3: TBitBtn;
+    pncliente: TPanel;
+    Label5: TLabel;
+    SpeedButton1: TSpeedButton;
+    detcliente: TDBEdit;
+    BitBtn1: TBitBtn;
+    pnavista: TPanel;
+    Label3: TLabel;
+    Label4: TLabel;
+    etentrada: TCurrencyEdit;
+    ettroco: TCurrencyEdit;
+    BitBtn4: TBitBtn;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure etentradaChange(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+
+    procedure BitBtn4Click(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure BitBtn5Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure cbtipopagChange(Sender: TObject);
+  private
+    public
+    { Public declarations }
+
+       codcliente, coditem : integer;
+  end;
+
+var
+  Formpagamento: TFormpagamento;
+
+implementation
+
+uses UDM, Con_Cliente, conclientevenda, Cad_Cliente, Cad_Venda,
+  Sel_Cliente;
+
+{$R *.dfm}
+
+procedure TFormpagamento.BitBtn1Click(Sender: TObject);
+begin
+FrmSel_Cliente.showmodal;
+end;
+
+procedure TFormpagamento.etentradaChange(Sender: TObject);
+var t,e :double;
+begin
+t:=ettotal.Value;
+e:=etentrada.Value;
+
+if e<t then
+ begin
+  ettroco.Value:=(e-t)
+  end
+  else
+  begin
+  ShowMessage('Entrada insuficiente!');
+  etentrada.SetFocus;
+  end;
+end;
+
+procedure TFormpagamento.BitBtn2Click(Sender: TObject);
+begin
+    if MessageDlg('Deseja finalizar a venda?',mtConfirmation,[mbOk,mbCancel],0)=mrOk  then
+          begin
+          if  cbtipopag.ItemIndex=0 then
+          BEGIN
+          dm.TblVenda.Insert;
+          dm.TblVendaData.Value := Date;
+          dm.Tblvendatotal.Value := strtofloat(ettotal.text);
+          dm.TblVendaCod_Item.value := coditem;
+          dm.TblVenda.Post;
+          dm.TblProduto.Post;
+          Formpagamento.Close;
+
+          end
+          else begin
+          dm.QryClienteNome.value := DM.TblClienteNome.Value;
+          dm.TblVenda.Insert;
+          dm.TblVendaData.Value := Date;
+          dm.Tblvendatotal.Value := strtofloat(ettotal.text);
+          dm.TblVendaCod_Item.value := coditem;
+          dm.TblVenda.Post;
+          dm.TblProduto.Post;
+          Formpagamento.Close;
+          end;
+     dm.total := 0;
+     ettotal.Text := '0';
+     dm.qryproduto.close;
+     dm.tblvenda.close;
+     dm.tblItem.close;
+     dm.qryItem.close;
+
+          with dm.Qryitem do
+          begin
+               close;
+               sql.Clear;
+               sql.Add('DELETE FROM ITEM WHERE COD_ITEM = ' + inttostr(coditem));
+               ExecSQL;
+          end;
+
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+ end;
+procedure TFormpagamento.BitBtn4Click(Sender: TObject);
+var t,e:double;
+begin
+
+t:=ettotal.Value;
+e:=etentrada.Value;
+if e>t then
+ begin
+  ettroco.Value:=(e-t)
+  end
+  else
+  begin
+  ShowMessage('Entrada insuficiente!');
+  etentrada.SetFocus;
+  end;
+
+end;
+
+procedure TFormpagamento.BitBtn3Click(Sender: TObject);
+begin
+if Application.MessageBox('Deseja realmente cancelar venda?','DEMarket',MB_YESNO + MB_ICONQUESTION)=idyes
+then begin
+dm.TblVenda.Cancel;
+FrmCad_Venda.Close;
+close;
+end;
+end;
+
+procedure TFormpagamento.SpeedButton1Click(Sender: TObject);
+begin
+FrmCad_Cliente.ShowModal;
+
+end;
+
+
+
+
+procedure TFormpagamento.BitBtn5Click(Sender: TObject);
+begin
+
+ dm.TblVenda.Insert;
+     dm.TblVendaCod_Cliente.value := FrmCad_Venda.codcliente;
+     dm.TblVendaData.Value := Date;
+     dm.Tblvendatotal.Value := strtofloat(Formpagamento.ettotal.text);
+     dm.TblVendaCod_Item.value := FrmCad_Venda.coditem;
+     dm.TblVenda.Post;
+end;
+
+procedure TFormpagamento.FormShow(Sender: TObject);
+begin
+dm.tblvenda.edit;
+etentrada.Clear;
+ettroco.Clear;
+end;
+
+procedure TFormpagamento.cbtipopagChange(Sender: TObject);
+begin
+if cbtipopag.ItemIndex=0 then
+begin
+pnavista.Visible:=true;
+pncliente.Visible:=false;
+end
+else
+begin
+pnavista.Visible:=false;
+pncliente.Visible:=True;
+end;
+end;
+end.

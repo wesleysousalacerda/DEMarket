@@ -1,0 +1,48 @@
+unit estoque;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, Grids, DBGrids;
+
+type
+  TFormestoque = class(TForm)
+    DBGrid1: TDBGrid;
+    EdtConsulta: TEdit;
+    Label1: TLabel;
+    procedure EdtConsultaChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Formestoque: TFormestoque;
+
+implementation
+
+uses UDM;
+
+{$R *.dfm}
+
+procedure TFormestoque.EdtConsultaChange(Sender: TObject);
+begin
+with dm.QryProduto do
+          begin
+               close;
+               sql.clear;
+               sql.add ('SELECT * FROM PRODUTO WHERE NOME LIKE '+#39+EdtConsulta.Text+'%'+#39+' order by NOME');
+               open;
+end;
+end;
+
+procedure TFormestoque.FormShow(Sender: TObject);
+begin
+dm.QryProduto.Open;
+EdtConsulta.SetFocus;
+end;
+
+end.

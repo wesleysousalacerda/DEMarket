@@ -1,0 +1,194 @@
+unit Cad_Fornecedores;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, XPMan, pngimage, ExtCtrls, StdCtrls, Mask, DBCtrls, Buttons,
+  ComCtrls, ToolWin;
+
+type
+  TFrmCad_Fornecedores = class(TForm)
+    Label1: TLabel;
+    DBEdit2: TDBEdit;
+    Label2: TLabel;
+    DBEdit1: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label6: TLabel;
+    DBEdit6: TDBEdit;
+    Label8: TLabel;
+    DBEdit8: TDBEdit;
+    Label9: TLabel;
+    DBEdit9: TDBEdit;
+    Label10: TLabel;
+    DBEdit10: TDBEdit;
+    XPManifest1: TXPManifest;
+    BarradeBotoes: TToolBar;
+    BtnNovo: TToolButton;
+    BtnSalvar: TToolButton;
+    BtnExcluir: TToolButton;
+    BtnLocalizar: TToolButton;
+    BtnSair: TToolButton;
+    Label7: TLabel;
+    DBEdit7: TDBEdit;
+    Label11: TLabel;
+    DBEdit11: TDBEdit;
+    DBNavigator1: TDBNavigator;
+    procedure BtNovoClick(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
+    procedure SpeedButton5Click(Sender: TObject);
+    procedure SpeedButton4Click(Sender: TObject);
+    procedure BtnNovoClick(Sender: TObject);
+    procedure BtnSalvarClick(Sender: TObject);
+    procedure BtnExcluirClick(Sender: TObject);
+    procedure BtnLocalizarClick(Sender: TObject);
+    procedure BtnSairClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBEdit2Exit(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure DBEdit6Exit(Sender: TObject);
+    procedure DBEdit2KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit6KeyPress(Sender: TObject; var Key: Char);
+    procedure DBEdit10KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmCad_Fornecedores: TFrmCad_Fornecedores;
+
+implementation
+
+uses UDM, Con_Fornecedores, MaskUtils, Cad_Cliente;
+
+{$R *.dfm}
+
+procedure TFrmCad_Fornecedores.BtNovoClick(Sender: TObject);
+begin
+DM.TblFornecedores.Insert;
+DBEdit2.SetFocus;
+end;
+
+procedure TFrmCad_Fornecedores.SpeedButton2Click(Sender: TObject);
+begin
+  try
+             if ((DBEdit2.Text <> '') and (DBEdit3.Text <> '')and(DBEdit4.Text <> '')
+             and(DBEdit5.Text <> '')and(DBEdit6.Text <> '')and(DBEdit7.Text <> '')and
+             (DBEdit8.Text <> '')and(DBEdit9.Text <> '')and(DBEdit9.Text <> '')) then
+                dm.TblCliente.Post
+             else
+                 showmessage ('Preencha todos os campos do cadastro');
+     except
+           showmessage ('Ocorreu um erro no cadastro, tente novamente');
+     end;
+end;
+
+procedure TFrmCad_Fornecedores.SpeedButton3Click(Sender: TObject);
+begin
+dm.TblFornecedores.Delete;
+end;
+
+procedure TFrmCad_Fornecedores.SpeedButton5Click(Sender: TObject);
+begin
+close;
+end;
+
+procedure TFrmCad_Fornecedores.SpeedButton4Click(Sender: TObject);
+begin
+FrmCon_Fornecedores.ShowModal;
+end;
+
+procedure TFrmCad_Fornecedores.BtnNovoClick(Sender: TObject);
+begin
+DM.TblFornecedores.Open;
+dm.TblFornecedores.Insert;
+end;
+
+procedure TFrmCad_Fornecedores.BtnSalvarClick(Sender: TObject);
+begin
+ try
+             if ((DBEdit2.Text <> '') and (DBEdit3.Text <> '')and
+                  (DBEdit4.Text <> '') and (DBEdit5.Text <> '') and
+                  (DBEdit6.Text <> '') and (DBEdit7.Text <> '') and
+                  (DBEdit8.Text <> '') and (DBEdit9.Text <> '') and
+                  (DBEdit10.Text <> '')) then
+                  begin
+                dm.TblFornecedores.Post;
+                ShowMessage('Dados salvos com sucesso')
+                 end
+                             else
+                 showmessage ('Preencha todos os campos do cadastro');
+               except
+           showmessage ('Ocorreu um erro no cadastro, tente novamente');
+     end;
+  
+end;
+
+procedure TFrmCad_Fornecedores.BtnExcluirClick(Sender: TObject);
+begin
+dm.TblFornecedores.Delete;
+end;
+
+procedure TFrmCad_Fornecedores.BtnLocalizarClick(Sender: TObject);
+begin
+FrmCon_Fornecedores.show;
+end;
+
+procedure TFrmCad_Fornecedores.BtnSairClick(Sender: TObject);
+begin
+close;
+end;
+
+procedure TFrmCad_Fornecedores.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+dm.TblFornecedores.close;
+end;
+
+procedure TFrmCad_Fornecedores.DBEdit2Exit(Sender: TObject);
+begin
+DBEdit2.Text := FormatMaskText('99.999.999/9999-99;0', DBEdit2.Text);
+end;
+
+procedure TFrmCad_Fornecedores.FormShow(Sender: TObject);
+begin
+dm.TblFornecedores.Open;
+ BtnNovo.OnClick(Self);
+
+end;
+
+procedure TFrmCad_Fornecedores.DBEdit6Exit(Sender: TObject);
+begin
+DBEdit6.Text := FormatMaskText('(99)9999-9999;0', DBEdit6.Text);
+end;
+
+procedure TFrmCad_Fornecedores.DBEdit2KeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if not (key in['0'..'9',chr(8)]) then
+key :=#0;
+end;
+
+procedure TFrmCad_Fornecedores.DBEdit6KeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if not (key in['0'..'9',chr(8)]) then
+key :=#0;
+end;
+
+procedure TFrmCad_Fornecedores.DBEdit10KeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if not (key in['0'..'9',chr(8)]) then
+key :=#0;
+end;
+
+end.

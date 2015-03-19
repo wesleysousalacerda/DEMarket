@@ -1,0 +1,246 @@
+unit Cad_Venda;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  ExtCtrls, StdCtrls, Mask, DBCtrls, Grids, DBGrids, ComCtrls, Buttons,
+  RXCtrls, pngimage, Tabs, VrControls, VrArrow, VrCompass ;
+
+type
+  TFrmCad_Venda = class(TForm)
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    lblistaprodutos: TLabel;
+    BtnInserir: TButton;
+    lbtotal: TLabel;
+    EdtProduto: TDBEdit;
+    EdtQuantidade: TDBEdit;
+    DBGrid1: TDBGrid;
+    DbItemCod: TDBEdit;
+    EdtPreco: TDBEdit;
+    FuncInsereItem: TButton;
+    GroupBox1: TGroupBox;
+    Label7: TLabel;
+    lbitnes: TLabel;
+    EdtTotalItem: TEdit;
+    Label9: TLabel;
+    Edttotalvenda: TEdit;
+    RxSpeedButton1: TRxSpeedButton;
+    Shape1: TShape;
+    Image1: TImage;
+    VrArrow1: TVrArrow;
+    procedure FormShow(Sender: TObject);
+    procedure EdtProdutoExit(Sender: TObject);
+    procedure BtnInserirClick(Sender: TObject);
+    procedure FuncInsereItemClick(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtPrecoEnter(Sender: TObject);
+    procedure EdtProdutoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtPrecoKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure EdtQuantidadeKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure btpagavistaClick(Sender: TObject);
+    procedure EdtProdutoKeyPress(Sender: TObject; var Key: Char);
+    procedure EdtPrecoKeyPress(Sender: TObject; var Key: Char);
+    procedure EdtQuantidadeKeyPress(Sender: TObject; var Key: Char);
+    procedure RxSpeedButton1Click(Sender: TObject);
+    procedure VrArrow1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+      codcliente, coditem : integer;
+
+  end;
+
+var
+  FrmCad_Venda: TFrmCad_Venda;
+
+
+implementation
+
+uses UDM, Principal, Con_ProdutoVenda, Con_Cliente, Sel_Cliente, Unit1,
+  pagaqvista, tipopagamento, form_prazo;
+
+{$R *.DFM}
+
+
+
+procedure TFrmCad_Venda.FormShow(Sender: TObject);
+begin
+     dm.QryProduto.open;
+     dm.tblVenda.open;
+     dm.TblItem.open;
+     dm.tblvenda.last;
+     coditem := dm.TblVendaCod_Venda.Value + 1;
+     FuncInsereItem.OnClick (self);
+end;
+
+procedure TFrmCad_Venda.EdtProdutoExit(Sender: TObject);
+begin
+   If edtproduto.Text = '' then
+        begin
+             showmessage ('Digite o código do produto, ou pesquise pelo nome');
+             EdtProduto.SelectAll;
+             edtproduto.SetFocus;
+            exit;
+        end;
+     with dm.QryProduto do
+          begin
+          close;
+          sql.Clear;
+          sql.add ('SELECT * FROM PRODUTO WHERE COD_PRODUTO = ' + Edtproduto.text + ' ');
+          open;
+          if recordcount = 0 then
+             begin
+                  showmessage ('Produto não cadastro');
+                  EdtProduto.SelectAll;
+                  edtproduto.SetFocus;
+                  exit;
+             end;
+          end;
+          BtnInserir.Enabled := True;
+
+end;
+
+procedure TFrmCad_Venda.BtnInserirClick(Sender: TObject);
+begin
+     if EdtQuantidade.text = '' then
+        begin
+             showmessage ('Digite uma quantidade');
+             EdtQuantidade.setfocus;
+             exit;
+        end;
+
+     DbItemCod.Text := inttostr(coditem);
+     dm.tblItem.post;
+
+          with dm.QryItem do
+          begin
+               close;
+               sql.Clear;
+               sql.Add ('SELECT * FROM ITEM WHERE COD_ITEM = ' + inttostr(coditem) + ' ORDER BY COD_ITEM DESC');
+               OPEN;
+               edttotalitem.text := inttostr(recordcount);
+               dm.total := dm.total + dm.QryItemtotalvenda.Value;
+          end;
+          with dm.QryProduto do
+          begin
+              close;
+              sql.Clear;
+              sql.add ('SELECT * FROM PRODUTO');
+              open;
+          end;
+
+     dm.QryItem.Refresh;
+     FuncInsereItem.OnClick (self);
+     BtnInserir.Enabled := false;
+     EdtProduto.SetFocus;
+     Edttotalvenda.Text := floattostr(dm.total);
+     form_pagavista.Pntotal.Caption:=form_pagavista.pntotal.Caption+' - '+  floattostr(dm.total);
+     formprazo.Edit1.Text:=edttotalvenda.text;
+      VrArrow1.Active:=true;
+end;
+
+procedure TFrmCad_Venda.FuncInsereItemClick(Sender: TObject);
+begin
+     dm.tblItem.Insert;
+end;
+
+
+
+procedure TFrmCad_Venda.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+if key = vk_F1 Then
+   frmcon_Produtovenda.show;
+
+If key = vk_F2 then
+begin
+Formtipodecompra.ShowModal;
+
+   close;
+
+end;
+end;
+
+procedure TFrmCad_Venda.EdtPrecoEnter(Sender: TObject);
+begin
+          EdtPreco.Text := floattostr(DM.QryProdutoPreco.value);
+          edtpreco.SelectAll;
+
+end;
+
+
+procedure TFrmCad_Venda.EdtProdutoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if Key = VK_RETURN then frmcon_Produtovenda.show;
+
+end;
+
+procedure TFrmCad_Venda.EdtPrecoKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+if Key = VK_RETURN then Perform(Wm_NextDlgCtl,0,0);
+end;
+
+procedure TFrmCad_Venda.EdtQuantidadeKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+if Key = VK_RETURN then Perform(Wm_NextDlgCtl,0,0);
+end;
+
+
+
+procedure TFrmCad_Venda.SpeedButton1Click(Sender: TObject);
+begin
+ frmcon_Produtovenda.show;
+
+
+end;
+
+procedure TFrmCad_Venda.btpagavistaClick(Sender: TObject);
+begin
+Form_pagavista.Show;
+end;
+
+procedure TFrmCad_Venda.EdtProdutoKeyPress(Sender: TObject; var Key: Char);
+begin
+if not (key in['0'..'9',chr(8)]) then
+key :=#0;
+end;
+
+procedure TFrmCad_Venda.EdtPrecoKeyPress(Sender: TObject; var Key: Char);
+begin
+if not (key in['0'..'9',chr(8),chr(44)]) then
+key :=#0;
+end;
+
+procedure TFrmCad_Venda.EdtQuantidadeKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+if not (key in['0'..'9',chr(8)]) then
+key :=#0;
+end;
+
+procedure TFrmCad_Venda.RxSpeedButton1Click(Sender: TObject);
+begin
+frmcon_Produtovenda.show;
+
+end;
+
+procedure TFrmCad_Venda.VrArrow1Click(Sender: TObject);
+begin
+VrArrow1.Active:=false;
+end;
+
+end.
+
